@@ -7,7 +7,7 @@ const fetch = (promise, time) => {
 }
 
 export default {
-  fetchAirwatchUsers () {
+  fetchData () {
     return fetch(tourDeFrance, 1000)
   }
 }
