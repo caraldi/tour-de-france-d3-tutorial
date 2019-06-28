@@ -8,11 +8,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoading: false,
-    error: null
+    error: null,
+    data: []
   },
   mutations: {
     [types.SET_LOADING_STATUS]: state => (state.isLoading = !state.isLoading),
-    [types.SET_ERROR]: state => state.error
+    [types.SET_ERROR]: state => state.error,
+    [types.SET_DATA]: (state, payload) => state.data.push(payload)
   },
   actions: {
     [types.FETCH_DATA]: async (context) => {
