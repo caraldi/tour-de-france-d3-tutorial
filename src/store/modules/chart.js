@@ -36,9 +36,18 @@ const mutations = {
       .join('circle')
 
       // Set circle attributes (e.g., position, size)
-      .attr('cx', 100)
+      // Circle's position set according to array index
+      .attr('cx', function (d, i) {
+        return i * 5
+      })
+
       .attr('cy', 50)
-      .attr('r', 10)
+
+      // Size each circle according to joined data
+      // Circle's radius set to return value of function
+      .attr('r', function (d) {
+        return +d.Entrants
+      })
   }
 }
 
