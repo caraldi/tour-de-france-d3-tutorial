@@ -26,6 +26,36 @@ const mutations = {
     const maxRadius = 20
     const rScale = d3.scaleSqrt().domain([0, 210]).range([0, maxRadius])
 
+    // Arrange the circles in a grid
+    const layout = (data) => {
+      const cellSize = 80
+
+      // Each row will contain 10 circles, representing a decade
+      const numCols = 10
+
+      // Iterates through data and adds layout object containing coordinate and radius of each tour
+      data.forEach(d => {
+        d.layout = {}
+
+        // Calculate index based on year
+        const i = d.Year - 1900
+
+        // Coordinates layout.x and layout.y are calculated by multiplying col and row by cellSize
+        // As i increments, col will be remainder after dividing i by numCols
+        const col = i % numCols
+        d.layout.x = col * cellSize + 0.5 * cellSize
+
+        // As i increments, row is calculated by dividing i by numCols and rounding down
+        const row = Math.floor(i / numCols)
+        d.layout.y = row * cellSize + 0.5 * cellSize
+
+        // Radius calculated using scale function
+        d.layout.entrantsRadius = rScale(d.Entrants)
+      })
+    }
+
+    layout(state.chartData)
+
     // Select the first HTML or SVG element that matches the CSS selector
     d3.select('svg g.chart')
 
@@ -39,21 +69,11 @@ const mutations = {
       // Create circle elements for each array element*
       .join('circle')
 
-      // Set circle attributes (e.g., position, size)
-      // Circle's position set according to array index
-      .attr('cx', function (d, i) {
-        return i * 5
-      })
+      .attr('cx', d => d.layout.x)
+      .attr('cy', d => d.layout.y)
+      .attr('r', d => d.layout.entrantsRadius)
 
-      .attr('cy', 50)
-
-      // Size each circle according to joined data
-      // Circle's radius set to return value of function
-      .attr('r', function (d) {
-        return rScale(d.Entrants)
-      })
-
-      .style('opacity', 0.1)
+      .style('fill', '#53c4da')
   }
 }
 
