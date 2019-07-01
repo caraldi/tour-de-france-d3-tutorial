@@ -22,6 +22,10 @@ const mutations = {
    * Source: https://flowingdata.com/2019/06/18/getting-started-with-d3/
    */
   [types.UPDATE_CHART_DATA]: state => {
+    // Use D3 scale function to scale circle area according to number of entrants
+    const maxRadius = 20
+    const rScale = d3.scaleSqrt().domain([0, 210]).range([0, maxRadius])
+
     // Select the first HTML or SVG element that matches the CSS selector
     d3.select('svg g.chart')
 
@@ -46,8 +50,10 @@ const mutations = {
       // Size each circle according to joined data
       // Circle's radius set to return value of function
       .attr('r', function (d) {
-        return +d.Entrants
+        return rScale(d.Entrants)
       })
+
+      .style('opacity', 0.1)
   }
 }
 
