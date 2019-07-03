@@ -49,15 +49,16 @@ const mutations = {
         const row = Math.floor(i / numCols)
         d.layout.y = row * cellSize + 0.5 * cellSize
 
-        // Radius calculated using scale function
+        // Calculate radius using scale function
         d.layout.entrantsRadius = rScale(d.Entrants)
+        d.layout.finishersRadius = rScale(d.Finishers)
       })
     }
 
     layout(state.chartData)
 
     // Select the first HTML or SVG element that matches the CSS selector
-    d3.select('svg g.chart')
+    d3.select('svg g.chart g.chart__entrants')
 
       // Make selection of all circles within initial selection
       // D3 will automatically add circles when the join occurs*
@@ -73,7 +74,19 @@ const mutations = {
       .attr('cy', d => d.layout.y)
       .attr('r', d => d.layout.entrantsRadius)
 
-      .style('fill', '#53c4da')
+      .style('fill', 'none')
+      .style('stroke', '#AAA')
+      .style('stroke-dasharray', '1 1')
+
+    d3.select('svg g.chart g.chart__finishers')
+      .selectAll('circle')
+      .data(state.chartData)
+      .join('circle')
+      .attr('cx', d => d.layout.x)
+      .attr('cy', d => d.layout.y)
+      .attr('r', d => d.layout.finishersRadius)
+
+      .style('fill', '#AAA')
   }
 }
 

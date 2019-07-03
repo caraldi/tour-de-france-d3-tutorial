@@ -10,6 +10,8 @@
       height="1000"
     >
       <g class="chart chart--circle">
+        <g class="chart__entrants"/>
+        <g class="chart__finishers"/>
       </g>
     </svg>
   </div>
